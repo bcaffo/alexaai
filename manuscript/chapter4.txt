@@ -1,0 +1,18 @@
+# Creating an Alexa app using Lambda
+
+What is Lambda?
+How does Alexa connect to Lambda?
+Why use Lambda over running your own server?
+
+## First create a Lambda function
+Logon to your Amazon AWS console. In the uppper right hand corner
+select "US East (N. Virginia)". Currently the only free tier for lambda is
+in that region. and click on "Lambda". 
+
+Next click on "Create a Lambda Function". 
+
+Next select "Blank Function"
+
+Next select the dotted square to select a trigger for your Lambda function.
+Select "Alexa skills set".
+

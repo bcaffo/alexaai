@@ -1,8 +1,19 @@
 # Creating an Alexa Flash Briefing Skill
 
-The Alexa Skills Kit comes with some template applications that we can develop first. [This link](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/getting-started-guide) gives a starting guide for the various basic ways to use the Alexa Skills Kit. First, there's *custom skills*, these are the most general and deserve really two categories themselves: using Amazon's Lambda service and running your own server. Covering this will be the bulk of the book, as we go over examples of creating Alexa Skills. Secondly, there's skills specific to smart home devices. In this case, you're having Alexa interact with devices like your lights or thermostat. Of course, to do this you either have to have smart devices you want to control or devices you'd like to turn into Alexa-enabled devices. Since this involves
-hardware purchases, we won't discuss it. Finally, there's Alexa Flash Briefing Skills, the subject in this chapter. We'll use Alexa to interact with a RSS (really simple syndication) feed. 
+The Alexa Skills Kit comes with some template applications that we can develop first. 
+[This link](https://developer.amazon.com/public/solutions/alexa/alexa-skills-kit/getting-started-guide) 
+gives a starting guide for the various basic ways to use the Alexa Skills Kit. First, there's *custom skills*, 
+these are the most general and deserve really two categories themselves: using Amazon's Lambda service and 
+running your own server. Covering this will be the bulk of the book, as we go over examples of creating Alexa Skills. 
+Secondly, there's skills specific to smart home devices. In this case, you're having Alexa interact with devices 
+like your lights or thermostat. Of course, to do this you either have to have smart devices you want to control or 
+devices you'd like to turn into Alexa-enabled devices. Since this involves
+hardware purchases, we won't discuss it. Finally, there's Alexa Flash Briefing Skills, the subject in this chapter. 
+We'll use Alexa to interact with a RSS (really simple syndication) feed. 
 
-
+## Getting started
+First, you'll need some basic knowledge about either RSS, JSON or web pages to interact with them using 
+Alexa. If you need to bone up on these topics, there's more than enough introductory tutorials on the
+internet that you can get by a simple google search (eg "introductory RSS tutorial"). 
 
 

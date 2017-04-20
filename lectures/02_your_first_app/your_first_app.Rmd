@@ -1,5 +1,5 @@
 ---
-title: "Your First App"
+title: "Your First App, Jeff Leek Facts"
 author: Brian Caffo
 output: ioslides_presentation
 ---
@@ -23,9 +23,10 @@ going to be copy and pasting.
 - Example developed by Diego Benitez
 - The github repo for the example is at 
 
-[https://github.com/alexa/skill-sample-nodejs-hello-world](https://github.com/alexa/skill-sample-nodejs-hello-world)
+[https://github.com/alexa/skill-sample-nodejs-fact](https://github.com/alexa/skill-sample-nodejs-fact)
 
 - You can clone the repo, or just copy and paste code from there
+- There's great directions there
 
 ## Sign into the Amazon developer portal
 - I often forget the url, google searching for "Alexa Skills Developer Console" it's the first hit
@@ -46,8 +47,8 @@ going to be copy and pasting.
 <img src="images/3.png" style="width:100%"></img>
 
 ## Fill in the fields
-- Name your app (say `Hello World`)
-- Invocation name (say `Hello World`) again
+- Name your app (say `Jeff Leek Facts`)
+- Invocation name (say `Jeff Leek Facts`) again
   - Alexa will invoke the skill with "Alexa open Hello World"
 - Audio player directives? No
 - Click `Save` then `Next`
@@ -67,10 +68,19 @@ going to be copy and pasting.
 {
   "intents": [
     {
-      "intent": "HelloWorldIntent"
+      "intent": "GetNewFactIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
     }
   ]
-} 
+}
 ```
 
 ## Sample utterances
@@ -81,10 +91,13 @@ the skill
 - Have to match your intent definitions (Amazon will give an error if not)
 
 ```
-HelloWorldIntent hello
-HelloWorldIntent say hello
-HelloWorldIntent say hello world
-HelloWorldIntent hello world
+GetNewFactIntent a fact
+GetNewFactIntent a Jeff fact
+GetNewFactIntent tell me a Jeff fact
+GetNewFactIntent tell me a Jeff fact
+GetNewFactIntent give me a fact
+GetNewFactIntent give me a Jeff fact
+GetNewFactIntent tell me Jeff Leek fact
 ```
 
 Click `Save` and then `Next`
@@ -123,6 +136,55 @@ the function
 
 <img src="images/9.png" style="width:100%"></img>
 
+## On the code entry type, choose 
+- Fill in a name and desciption
+- Leave the runtime as `Node.js 4.3`
+- `Code Entry Type` as `Edit code inline`
+- Paste in all of the code from the github repo into the text box
+[https://github.com/bcaffo/alexaai/blob/master/lectures/02_your_first_app/jeffLeekFactsLambdaCode.js](https://github.com/bcaffo/alexaai/blob/master/lectures/02_your_first_app/jeffLeekFactsLambdaCode.js)
 
-## 
+
+## Scroll down
+- There's more. Keep your environment variables blank
+- Keep your `Handler` as `index.handler`
+- `Role*` as `Create custom role`
+
+<img src="images/10.png" style="width:100%"></img>
+
+
+## Use the auto-populated values on this page and click `Allow`
+Leave `Tags` and `Advanced` as is and click next
+
+<img src="images/11.png" style="width:100%"></img>
+
+## Click `Create Function`
+
+<img src="images/12.png" style="width:100%"></img>
+
+
+## Get your `ARN` number (upper right) 
+
+<img src="images/13.png" style="width:100%"></img>
+
+## Paste it into your `Endpoint` 
+Not in AWS, in the Alexa Skills Kit Developer Console
+
+<img src="images/14.png" style="width:100%"></img>
+
+## Now you can test your skill
+
+<img src="images/14.png" style="width:100%"></img>
+
+## You can also test your skill on lambda to debug there
+- Copy your Lambda request from your Alexa Developer Console test
+page for your app
+- Paste it into your `Configure test event` 
+- Click on `Test`
+
+<img src="images/16.png" style="width:50%"></img>
+
+## See the result and log files below on the same page
+
+<img src="images/17.png" style="width:100%"></img>
+
 

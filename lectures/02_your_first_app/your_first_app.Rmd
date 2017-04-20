@@ -1,0 +1,36 @@
+---
+title: "Your First App"
+author: Brian Caffo
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE)
+```
+
+## Creating your first app
+- In this lecture, you'll create your first app
+- We'll be creating a *custom skill* using Amazon's
+Alexa Voice Service and Lambda
+- Make sure that you have an account on the Alexa Skills Developer Portal
+- Since we'll be using the Lambda free tier, this won't
+cost anything for development
+
+## Hello world
+- The first step will be to do Amazon's recommended "Hello World" app
+- This uses node.js, but don't worry if you don't know it, we're just
+going to be copy and pasting.
+- The github repo for the example is at 
+
+[https://github.com/alexa/skill-sample-nodejs-hello-world](https://github.com/alexa/skill-sample-nodejs-hello-world)
+
+- You can clone the repo, or just copy and paste code from there
+
+## Sign into the Amazon developer portal
+- I often forget the url, google searching for "Alexa Skills Developer Console" it's the first hit
+- [https://developer.amazon.com/home.html](https://developer.amazon.com/home.html)
+- Make sure that you're signed in (upper right)
+- Click on Alexa
+
+## 
+

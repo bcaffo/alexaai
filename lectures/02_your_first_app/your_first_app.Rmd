@@ -187,4 +187,7 @@ page for your app
 
 <img src="images/17.png" style="width:100%"></img>
 
+## Exercise
+- Adapt the code so that it's facts about a friend
+
 

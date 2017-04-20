@@ -20,6 +20,7 @@ cost anything for development
 - The first step will be to do Amazon's recommended "Hello World" app
 - This uses node.js, but don't worry if you don't know it, we're just
 going to be copy and pasting.
+- Example developed by Diego Benitez
 - The github repo for the example is at 
 
 [https://github.com/alexa/skill-sample-nodejs-hello-world](https://github.com/alexa/skill-sample-nodejs-hello-world)
@@ -59,26 +60,69 @@ going to be copy and pasting.
 
 - I think of intents as variable names for interactions with Alexa
 
-## My intent schema
+
+## The intent schema from the repo
 
 ```
 {
-  "intents" : [
+  "intents": [
     {
-      "intent" : "sayHelloWord"
-    },
-    {
-      "intent" : "AMAZON.HelpIntent"
-    },
-    {
-      "intent" : "AMAZON.StopIntent"
-    },
-    {
-      "intent" : "AMAZON.CancelIntent"
+      "intent": "HelloWorldIntent"
     }
   ]
-}
+} 
 ```
 
+## Sample utterances
 
+- These are the things that people will say to invoke
+the skill
+- Try to include as many phrases as you can 
+- Have to match your intent definitions (Amazon will give an error if not)
+
+```
+HelloWorldIntent hello
+HelloWorldIntent say hello
+HelloWorldIntent say hello world
+HelloWorldIntent hello world
+```
+
+Click `Save` and then `Next`
+
+## Check `AWS Lambda ARN (Amazon Resource Name)` 
+
+<img src="images/4.png" style="width:100%"></img>
+
+You also have to pick a geographical region, my was `North America`
+and then filled in with data from your lambda app, so we'll come
+back to this
+
+## Sign in to Amazon Web Services (AWS)
+- Get an AWS account and sign in to the management console at [https://aws.amazon.com/](https://aws.amazon.com/)
+- Make sure that you're using `US East (N. Virgina)` in the upper right dialog box
+
+<img src="images/5.png" style="width:100%"></img>
+
+## Check on the `Lambda` link in `Services` (upper left)
+
+<img src="images/6.png" style="width:100%"></img>
+
+## Click on `Create Lambda Function`
+
+<img src="images/7.png" style="width:100%"></img>
+
+## Select `Blank Function`
+
+The follow these instructions to get Alexa Skills Kit to trigger
+the function
+
+<img src="images/8.png" style="width:100%"></img>
+
+
+## It should look like this
+
+<img src="images/9.png" style="width:100%"></img>
+
+
+## 
 

@@ -32,5 +32,53 @@ going to be copy and pasting.
 - Make sure that you're signed in (upper right)
 - Click on Alexa
 
-## 
+## Click on "Alexa Skills Kit"
+
+<img src="images/1.png" style="width:100%"></img>
+
+## Add a new skill
+
+<img src="images/2.png" style="width:100%"></img>
+
+## Make sure "Custom Interaction Model" is checked
+
+<img src="images/3.png" style="width:100%"></img>
+
+## Fill in the fields
+- Name your app (say `Hello World`)
+- Invocation name (say `Hello World`) again
+  - Alexa will invoke the skill with "Alexa open Hello World"
+- Audio player directives? No
+- Click `Save` then `Next`
+
+## The interaction model
+- Amazon has launched a new interface called the "Skill Builder". Since this is still in beta, we'll do it using the existing interface. However, the Skill Builder is pretty cool, so give it a try on a next app.
+- First we need to add some `intents`. From Amazon
+
+*"An intent represents an action that fulfills a user’s spoken request. Intents can optionally have arguments called slots."*
+
+- I think of intents as variable names for interactions with Alexa
+
+## My intent schema
+
+```
+{
+  "intents" : [
+    {
+      "intent" : "sayHelloWord"
+    },
+    {
+      "intent" : "AMAZON.HelpIntent"
+    },
+    {
+      "intent" : "AMAZON.StopIntent"
+    },
+    {
+      "intent" : "AMAZON.CancelIntent"
+    }
+  ]
+}
+```
+
+
 

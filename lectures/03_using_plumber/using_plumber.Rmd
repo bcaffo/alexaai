@@ -23,17 +23,34 @@ be a little different
 
 ## Setting up your server
 - Luckily we have Jeff Allen's great work on `plumber` and `alexar` to help us out
-- We'll set up our server on Digital Ocean, this is a particularly nice 
+- We'll set up our server on DigitalOcean, this is a particularly nice 
 cloud platform for running servers so that you don't have to have hardware yourself
   - Other options include: Amazon's EC2 or Google and Microsoft's cloud platforms
   - Or you could run your own with that old laptop that's not doing anything
 - Our solution is definitely the easiest for this class
-- Step one is to set up and account on Digital Ocean
+- Step one is to set up and account on DigitalOcean
+
+## Set up ssh keys
+- It's good to set up ssh keys
+- Click on your icon on DigitalOcean (upper right) then "settings" the on the left "security"
+- Click on "add ssh key"
+- paste your public key file and name it then select save
+- Information on how to generate public keys can be found [here](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets)
+- I had to generate a new key to get this to work, I think it was the specific encryption
+of my old keys
+- On windows you can use [gitbash](https://git-scm.com/downloads) to generate your keys, put them in `.ssh` in the to level of your user directory (or you can use putty, or bash on windows)
+- in OSX or Linux use your default shell
+
+## Verify 
+- Verify that you can create a server and log into it using your ssh key
+- This will save you some trouble of getting everything to work in R
+- In windows use gitbash to check
+- In OSX or Linux use the terminal to check
 
 ## Install development version of plumber
 - Start an R session, make sure that you have `devtools` installed
 - `plumber` is an R package for controlling a webserver using R
-- Install required package `analogsea`
+- Install required package `analogsea` (DigitalOcean control for R)
 - Install `plumber` directly from Jeff Allen's github repo and load it
 
 ```{r, eval = FALSE}
@@ -43,12 +60,36 @@ library(plumber)
 ```
 
 ## Spool up your server, using R!
-- Start your server on Digital Ocean using plumber's command
-- If you already have a droplet on Digital Ocean you can start it using
-this command otherwise it will start a new one
-- `unstable = TRUE` tells `plumber` to install development versions of `plumber` on the server
+- Start your server on DigitalOcean using plumber's command
 
 ```{r, eval = FALSE}
-do_provision(unstable = TRUE)
-
+do_provision(unstable = TRUE, name = "alexatest", ssh_keys = "id_rsa")
 ```
+
+- Should take a few minutes and see a lot of stuff like this
+
+```{eval = FALSE}
+make[1]: Entering directory '/tmp/RtmphuOEBD/R.INSTALL5b03145cdc25/httpuv/src/http-parser'
+gcc -std=gnu99 -I. -DHTTP_PARSER_STRICT=0  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -fpic -O3  -c http_parser.c
+make[1]: Leaving directory '/tmp/RtmphuOEBD/R.INSTALL5b03145cdc25/httpuv/src/http-parser'
+(cd sha1 && gcc -std=gnu99 -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -fpic -c sha1.c -o sha1.o)
+```
+
+## Some notes
+- This didn't work for me using Rstudio from a cloud server, still working on figuring that out
+- Nothing worked correctly until ssh keys were resolved
+- `unstable = TRUE` tells `plumber` to install development versions of `plumber` on the server
+- `id_rsa` was the name of my ssh key (following the DO convention)
+- I get some error messages at the end that I can't get rid of
+
+
+
+## Droplet is up on DO
+
+![Droplet on DigitalOcean](images/1.png)
+
+## Some notes
+- Your server is now up and running (and charging you money), you can "destroy" the droplet on DigitalOcean when you're done with it.
+- You can check on DigitalOcean to see the droplet there and look at graphs
+- `do_provision` installed all of the software needed to run our server!
+

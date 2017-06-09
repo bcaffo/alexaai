@@ -1,0 +1,41 @@
+Some notes on directly using DO or EC2, should switch to a shell file
+
+1. Create a droplet
+  a. ubuntu-16-04-x64
+  b. give it a name like "alexatest"
+  c. make sure to check your ssh key
+2. You have to either add swap space or resize the droplet for more memory
+3. Add cran to the debian source file lists
+  a. echo 'deb https://cran.rstudio.com/bin/linux/ubuntu trusty/' >> /etc/apt/sources.list
+4. There's a command to add a keyserver, not sure why
+  a. apt-key adv --keyserver keyserver.ubuntu.com --recv-keys E084DAB9
+  b. see here where the key file is comming from https://cran.r-project.org/bin/linux/ubuntu/
+5. sudo apt-get update
+6. Install R sudo apt-get install r-base, r-based-dev
+7. Add rstudio cran to your .Rprofile 
+  a. echo "options(repos=c('http://cran.rstudio.com/'))" > .Rprofile
+8. sudo apt-get install libcurl4-openssl-dev
+9. sudo apt-get install libgit2-dev
+10. sudo apt-get install libssl-dev
+11. Install devtools 
+  a. Rscript -e \"install.packages('devtools', repos='https://cran.rstudio.com/')
+12. Install plumber unstable
+  a. Rscript -e \"devtools::install_github('trestletech/plumber')
+13. mkdir -p /var/plumber
+14. Copy the plumber examples, for example mine are in
+  scp C:/Users/bcaffo/R/win-library/3.2/plumber/examples/10-welcome/** /var/plumber/
+15. sudo apt-get install -y --force-yes nginx 
+  don't know if the --force-yes is necessary
+16. rm -f /etc/nginx/sites-enabled/default
+17. mkdir -p /var/certbot
+18. mkdir -p /etc/nginx/sites-available/plumber-apis/
+19. Copy the serve nginx configuration
+ a. scp "C:/Users/bcaffo/R/win-library/3.2/plumber/server/nginx.conf" /etc/nginx/sites-available/plumber
+20. create a symbolic link
+  a. ln -sf /etc/nginx/sites-available/plumber /etc/nginx/sites-enabled/
+21. reload nginx
+  a. systemctl reload nginx
+22. Create the firewall exceptions
+  a. ufw allow http
+  b. ufw allow ssh 
+  c. ufw -f enable

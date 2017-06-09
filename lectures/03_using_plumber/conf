@@ -1,0 +1,2 @@
+[1] "location /hello/ {"                   "  proxy_pass http://localhost:8000/;"
+[3] "  proxy_set_header Host $host;"       "}"                                   

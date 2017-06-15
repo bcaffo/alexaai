@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Using plumber for a custom echo skill hosted on your own server</title>
+  <title>Provisioning your server</title>
 
   <meta charset="utf-8">
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -20,7 +20,7 @@
     var SLIDE_CONFIG = {
       // Slide settings
       settings: {
-                title: 'Using plumber for a custom echo skill hosted on your own server',
+                title: 'Provisioning your server',
                         useBuilds: true,
         usePrettify: true,
         enableSlideAreas: true,
@@ -112,10 +112,18 @@
 <li>Each of these steps will be a bit involved, so we&#39;ll go through them in detail</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Setting up your server</h2></hgroup><article  id="setting-up-your-server">
+</article></slide><slide class=''><hgroup><h2>Assumptions</h2></hgroup><article  id="assumptions">
 
 <ul>
-<li>Luckily we have Jeff Allen&#39;s great work on <code>plumber</code> and <code>alexar</code> to help us out</li>
+<li>We&#39;re going to assume that you&#39;re working from a unix/linux machine</li>
+<li>If you&#39;re using a cloud instance of Rstudio as your linux machine, it&#39;s a bad idea to run your alexa server on it, spool of a new digital ocean droplet</li>
+<li>So, we&#39;ll assume that you have a unix/linux version of R running and that you can access a terminal and R session on that machine</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Setting up your alexa server</h2></hgroup><article  id="setting-up-your-alexa-server">
+
+<ul>
+<li>Luckily we have great work on <code>plumber</code>, <code>analogsea</code> and <code>alexar</code> to help us out</li>
 <li>We&#39;ll set up our server on DigitalOcean, this is a particularly nice cloud platform for running servers so that you don&#39;t have to have hardware yourself</li>
 <li>Other options include: Amazon&#39;s EC2 or Google and Microsoft&#39;s cloud platforms</li>
 <li>Or you could run your own with that old laptop that&#39;s not doing anything</li>
@@ -126,14 +134,12 @@
 </article></slide><slide class=''><hgroup><h2>Set up ssh keys</h2></hgroup><article  id="set-up-ssh-keys">
 
 <ul>
-<li>It&#39;s good to set up ssh keys</li>
+<li>It&#39;s necessary to set up ssh keys</li>
 <li>Click on your icon on DigitalOcean (upper right) then &quot;settings&quot; the on the left &quot;security&quot;</li>
 <li>Click on &quot;add ssh key&quot;</li>
 <li>paste your public key file and name it then select save</li>
 <li>Information on how to generate public keys can be found <a href='https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets' title=''>here</a></li>
 <li>I had to generate a new key to get this to work, I think it was the specific encryption of my old keys</li>
-<li>On windows you can use <a href='https://git-scm.com/downloads' title=''>gitbash</a> to generate your keys, put them in <code>.ssh</code> in the to level of your user directory (or you can use putty, or bash on windows)</li>
-<li>in OSX or Linux use your default shell</li>
 </ul>
 
 </article></slide><slide class=''><hgroup><h2>Verify</h2></hgroup><article  id="verify">
@@ -145,26 +151,37 @@
 <li>In OSX or Linux use the terminal to check</li>
 </ul>
 
-</article></slide><slide class=''><hgroup><h2>Install development version of plumber</h2></hgroup><article  id="install-development-version-of-plumber">
+</article></slide><slide class=''><hgroup><h2>Authentication</h2></hgroup><article  id="authentication">
+
+<ul>
+<li>Get an authentication token from DigitalOcean <a href='https://cloud.digitalocean.com/settings/tokens/new' title=''>https://cloud.digitalocean.com/settings/tokens/new</a></li>
+<li><p>Assign the token to an environment variable called DO_PAT</p>
+
+<pre >export DO_PAT=TOKEN NUMBER FROM DIGITALOCEAN</pre>
+
+<p>Add this line to your <code>.bashrc</code> file if you&#39;d like</p></li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Install development versions of analogsea and plumber</h2></hgroup><article  id="install-development-versions-of-analogsea-and-plumber">
 
 <ul>
 <li>Start an R session, make sure that you have <code>devtools</code> installed</li>
-<li><code>plumber</code> is an R package for controlling a webserver using R</li>
-<li>Install required package <code>analogsea</code> (DigitalOcean control for R)</li>
-<li>Install <code>plumber</code> directly from Jeff Allen&#39;s github repo and load it</li>
 </ul>
+
+<pre class = 'prettyprint lang-r'>devtools::install_github(&quot;sckott/analogsea&quot;)
+devtools::install_github(&quot;trestletech/plumber&quot;)
+library(plumber)</pre>
 
 </article></slide><slide class=''><hgroup><h2>Spool up your server, using R!</h2></hgroup><article  id="spool-up-your-server-using-r">
 
 <ul>
-<li><p>Start your server on DigitalOcean using plumber&#39;s command</p></li>
-<li><p>Should take a few minutes and see a lot of stuff like this</p></li>
-<li>I got an error message unless I explicitly gave it a name</li>
-<li>This didn&#39;t work for me using Rstudio from a cloud server</li>
-<li><code>unstable = TRUE</code> tells <code>plumber</code> to install development versions of <code>plumber</code> on the server</li>
-<li><code>id_rsa</code> was the name of my ssh key (following the DO convention)</li>
-<li></li>
-<li><p>I get some error messages at the end</p></li>
+<li>Start your server on DigitalOcean using plumber&#39;s command</li>
+</ul>
+
+<pre class = 'prettyprint lang-r'>do_provision(unstable = TRUE, name = &quot;alexatest&quot;)</pre>
+
+<ul>
+<li>Should take a few minutes and create a lot of messages</li>
 </ul>
 
 </article></slide><slide class=''><hgroup><h2>Droplet is up on DO</h2></hgroup><article  id="droplet-is-up-on-do">
@@ -177,6 +194,22 @@
 <li>Your server is now up and running (and charging you money), you can &quot;destroy&quot; the droplet on DigitalOcean when you&#39;re done with it.</li>
 <li>You can check on DigitalOcean to see the droplet there and look at graphs</li>
 <li><code>do_provision</code> installed all of the software needed to run our server!</li>
+<li>Check your server by copying the ip address of the server and pasting it into your browser, it should say &quot;Plumber is alive!&quot;</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Money saving tips on DO or EC2</h2></hgroup><article  id="money-saving-tips-on-do-or-ec2">
+
+<ul>
+<li>Turn off your servers when you aren&#39;t using them</li>
+<li>Create the smallest size server (you can resize it later if needed); our script uses default the smallest server and tricks like ramdrive to get away with it</li>
+<li>Destroy / terminate the server when you&#39;re done using it</li>
+</ul>
+
+</article></slide><slide class=''><hgroup><h2>Using EC2 instead of DO</h2></hgroup><article  id="using-ec2-instead-of-do">
+
+<ul>
+<li>I&#39;m working on a shell script that does all of the stuff that do_provision does so that you can do it on any linux server</li>
+<li>The script can be found here <a href='https://github.com/bcaffo/alexaai/blob/master/lectures/03_using_plumber/install.sh' title=''>here</a></li>
 </ul></article></slide>
 
 
@@ -189,7 +222,7 @@
   (function () {
     var script = document.createElement("script");
     script.type = "text/javascript";
-    script.src  = "https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
+    script.src  = "https://mathjax.rstudio.com/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML";
     document.getElementsByTagName("head")[0].appendChild(script);
   })();
 </script>

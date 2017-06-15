@@ -1,5 +1,5 @@
 ---
-title: "Using plumber for a custom echo skill hosted on your own server"
+title: "Provisioning your server"
 output: ioslides_presentation
 ---
 
@@ -21,8 +21,15 @@ be a little different
   3. Setting up our app using the Alexa skills kit
 - Each of these steps will be a bit involved, so we'll go through them in detail
 
-## Setting up your server
-- Luckily we have Jeff Allen's great work on `plumber` and `alexar` to help us out
+## Assumptions
+- We're going to assume that you're working from a unix/linux machine
+- If you're using a cloud instance of Rstudio as your linux machine, 
+it's a bad idea to run your alexa server on it, spool of a new digital ocean droplet
+- So, we'll assume that you have a unix/linux version of R running and that
+you can access a terminal and R session on that machine
+
+## Setting up your alexa server
+- Luckily we have great work on `plumber`, `analogsea` and `alexar` to help us out
 - We'll set up our server on DigitalOcean, this is a particularly nice 
 cloud platform for running servers so that you don't have to have hardware yourself
   - Other options include: Amazon's EC2 or Google and Microsoft's cloud platforms
@@ -31,15 +38,13 @@ cloud platform for running servers so that you don't have to have hardware yours
 - Step one is to set up and account on DigitalOcean
 
 ## Set up ssh keys
-- It's good to set up ssh keys
+- It's necessary to set up ssh keys
 - Click on your icon on DigitalOcean (upper right) then "settings" the on the left "security"
 - Click on "add ssh key"
 - paste your public key file and name it then select save
 - Information on how to generate public keys can be found [here](https://www.digitalocean.com/community/tutorials/how-to-use-ssh-keys-with-digitalocean-droplets)
 - I had to generate a new key to get this to work, I think it was the specific encryption
 of my old keys
-- On windows you can use [gitbash](https://git-scm.com/downloads) to generate your keys, put them in `.ssh` in the to level of your user directory (or you can use putty, or bash on windows)
-- in OSX or Linux use your default shell
 
 ## Verify 
 - Verify that you can create a server and log into it using your ssh key
@@ -47,14 +52,20 @@ of my old keys
 - In windows use gitbash to check
 - In OSX or Linux use the terminal to check
 
-## Install development version of plumber
-- Start an R session, make sure that you have `devtools` installed
-- `plumber` is an R package for controlling a webserver using R
-- Install required package `analogsea` (DigitalOcean control for R)
-- Install `plumber` directly from Jeff Allen's github repo and load it
+## Authentication
+- Get an authentication token from DigitalOcean [https://cloud.digitalocean.com/settings/tokens/new](https://cloud.digitalocean.com/settings/tokens/new)
+- Assign the token to an environment variable called DO_PAT
+```
+export DO_PAT=TOKEN NUMBER FROM DIGITALOCEAN
+```
+Add this line to your `.bashrc` file if you'd like
 
-```{r, eval = FALSE}
-install.packages("analogsea")
+
+## Install development versions of analogsea and plumber
+- Start an R session, make sure that you have `devtools` installed
+
+```{r, eval = FALSE, echo = TRUE}
+devtools::install_github("sckott/analogsea")
 devtools::install_github("trestletech/plumber")
 library(plumber)
 ```
@@ -62,26 +73,11 @@ library(plumber)
 ## Spool up your server, using R!
 - Start your server on DigitalOcean using plumber's command
 
-```{r, eval = FALSE}
-do_provision(unstable = TRUE, name = "alexatest", ssh_keys = "id_rsa")
+```{r, eval = FALSE, echo = TRUE}
+do_provision(unstable = TRUE, name = "alexatest")
 ```
 
-- Should take a few minutes and see a lot of stuff like this
-
-```{eval = FALSE}
-make[1]: Entering directory '/tmp/RtmphuOEBD/R.INSTALL5b03145cdc25/httpuv/src/http-parser'
-gcc -std=gnu99 -I. -DHTTP_PARSER_STRICT=0  -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -fpic -O3  -c http_parser.c
-make[1]: Leaving directory '/tmp/RtmphuOEBD/R.INSTALL5b03145cdc25/httpuv/src/http-parser'
-(cd sha1 && gcc -std=gnu99 -g -O2 -fstack-protector --param=ssp-buffer-size=4 -Wformat -Werror=format-security -D_FORTIFY_SOURCE=2 -g  -fpic -c sha1.c -o sha1.o)
-```
-
-## Some notes
-- This didn't work for me using Rstudio from a cloud server, still working on figuring that out
-- Nothing worked correctly until ssh keys were resolved
-- `unstable = TRUE` tells `plumber` to install development versions of `plumber` on the server
-- `id_rsa` was the name of my ssh key (following the DO convention)
-- I get some error messages at the end that I can't get rid of
-
+- Should take a few minutes and create a lot of messages
 
 
 ## Droplet is up on DO
@@ -92,4 +88,18 @@ make[1]: Leaving directory '/tmp/RtmphuOEBD/R.INSTALL5b03145cdc25/httpuv/src/htt
 - Your server is now up and running (and charging you money), you can "destroy" the droplet on DigitalOcean when you're done with it.
 - You can check on DigitalOcean to see the droplet there and look at graphs
 - `do_provision` installed all of the software needed to run our server!
+- Check your server by copying the ip address of the server and pasting
+it into your browser, it should say "Plumber is alive!"
+
+## Money saving tips on DO or EC2
+- Turn off your servers when you aren't using them
+- Create the smallest size server (you can resize it later if needed); our 
+script uses default the smallest server and tricks like ramdrive to get
+away with it
+- Destroy / terminate the server when you're done using it
+
+## Using EC2 instead of DO
+- I'm working on a shell script that does all of the stuff that do_provision does
+  so that you can do it on any linux server
+- The script can be found here [here](https://github.com/bcaffo/alexaai/blob/master/lectures/03_using_plumber/install.sh)
 

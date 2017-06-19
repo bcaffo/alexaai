@@ -13,6 +13,7 @@ knitr::opts_chunk$set(echo = FALSE)
 - Now we'd like to try running our own server, and we're going to use R to do it!
 - Set up on the Alexa skills kit will be similar; set up on the server will
 be a little different
+- A lot of this content is from Jeff Allen's video [here](https://www.youtube.com/watch?v=OiREOPog3Cs)
 
 ## General overview
 - In broad strokes we need

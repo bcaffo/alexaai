@@ -10,12 +10,14 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ```
 
 ## Registering a domain
+- [trestletech video on this](https://www.youtube.com/watch?v=EpgdrRTBZwg)
 - Echo development requires `https`, encrypted communication between our alexa server and web server, to function
 - To use `https` we need a domain
 - Purchase a domain on one of the sites
   - I used `namecheap`, but some others include `name.com`, `godaddy` etc; shop around
   for the one you like best
   - Type in a domain that you might want and shop around for a good value
+
 
 ## Steps when I did it on namecheap
 - I bought the domain `myalexaservice.site` for $0.88 / year

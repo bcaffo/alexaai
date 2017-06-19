@@ -1,0 +1,83 @@
+---
+title: "Your 2nd App"
+author: "Brian Caffo"
+date: "6/19/2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+## Basic app
+- We're going to create a basic app that just communicates
+betwen R and the alexa service
+
+## Save this file in a directory called `alexaTest/plumber.R`
+```{r}
+library(alexar)
+
+#* @post /
+#* @serializer unboxedJSON
+function(req){
+  dispatchAlexaRequest(req, intent=function(name, slots, ...){
+    if (name=="intent1"){
+      alexaResponse(output="This is how I respond to intent1!")
+    } else if (name=="intent2"){
+      alexaResponse(output="This is what I say to intent2!")
+    }
+  }, launch=function(){
+    alexaResponse("You can ask for intent1 or intent2")
+  })
+}
+```
+
+## Getting your service running
+```{r}
+## list out your droplets
+analogsea::droplets()
+## assign the one you want to a variable
+myDroplet = analogsea::droplets()$alexatest
+```
+- `alexatest` is the name of my droplet (also what I'm calling the app and plumber service)
+
+
+## Run your service
+
+
+
+## Creating your app on alexa skills kit
+- We've already gone over much of this, so we'll redo it kind of quickly
+- Go to Amazon Developer Console -> Alexa -> Add new skill
+- Skill type should be "Custom interaction model"
+- Fill in the rest of the fields, click Save then Next
+
+```
+{
+  "intents": [
+    {
+      "intent": "testMyAppIntent"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}
+```
+
+## Sample Utterances
+```
+testMyAppIntent test my app
+testMyAppIntent can you test my app
+testMyAppIntent will you test my app
+testMyAppIntent please test my app
+```
+
+## Configuration
+- Pick Endpoint as `https`

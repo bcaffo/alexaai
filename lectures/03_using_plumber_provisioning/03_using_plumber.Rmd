@@ -7,16 +7,22 @@ output: ioslides_presentation
 knitr::opts_chunk$set(echo = FALSE)
 ```
 
-## Summary
+## Why use your own server
+- Probably using Alexa's Lambda service is the easiest way to get started programming echo skills
+- However, you have to learn node, python or java (and we like R and have built most of this specialization around it) 
+- Using your own server offers the greatest flexibility in app development
+
+## Getting started
 
 - We've created an Alexa app using lambda, Amazon's on demand serverless hosting service
 - Now we'd like to try running our own server, and we're going to use R to do it!
 - Set up on the Alexa skills kit will be similar; set up on the server will
 be a little different
-- A lot of this content is from Jeff Allen's video [here](https://www.youtube.com/watch?v=OiREOPog3Cs)
+- A lot of this content is from Jeff Allen's videos [here](https://www.youtube.com/watch?v=OiREOPog3Cs)
+
 
 ## General overview
-- In broad strokes we need
+- In broad strokes we need:
   1. A server that takes input in the correct format over secure http (https) and sends it back in the correct format (adhering to Alexa's json requirements)
   2. Getting a domain name for that server
   3. Setting up our app using the Alexa skills kit
@@ -55,11 +61,11 @@ of my old keys
 
 ## Authentication
 - Get an authentication token from DigitalOcean [https://cloud.digitalocean.com/settings/tokens/new](https://cloud.digitalocean.com/settings/tokens/new)
-- Assign the token to an environment variable called DO_PAT
+- Assign the token to an environment variable called `DO_PAT`, in R
 ```
-export DO_PAT=TOKEN NUMBER FROM DIGITALOCEAN
+Sys.setenv(DO_PAT="AUTHENTICATION TOKEN")
 ```
-Add this line to your `.bashrc` file if you'd like
+Add this line to your `.Rprofile` file 
 
 
 ## Install development versions of analogsea and plumber
@@ -92,15 +98,16 @@ do_provision(unstable = TRUE, name = "alexatest")
 - Check your server by copying the ip address of the server and pasting
 it into your browser, it should say "Plumber is alive!"
 
-## Money saving tips on DO or EC2
+## Money saving tips on DO (or any cloud server provider)
 - Turn off your servers when you aren't using them
 - Create the smallest size server (you can resize it later if needed); our 
 script uses default the smallest server and tricks like ramdrive to get
 away with it
 - Destroy / terminate the server when you're done using it
 
-## Using EC2 instead of DO
+## Using another cloud provider
 - I'm working on a shell script that does all of the stuff that do_provision does
   so that you can do it on any linux server
 - The script can be found here [here](https://github.com/bcaffo/alexaai/blob/master/lectures/03_using_plumber/install.sh)
+- Currently it's missing something
 

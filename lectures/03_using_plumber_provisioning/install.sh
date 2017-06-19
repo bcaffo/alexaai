@@ -30,7 +30,8 @@ Rscript -e "devtools::install_github('trestletech/plumber')"
 mkdir -p /var/plumber
 
 ## copy over the example, not sure why it's put here and in the /var/plumber/hello directory
-cp /usr/local/lib/R/site-library/plumber/examples/10-welcome/* /var/plumber/
+# commenting out since I don't think that this is needed
+#cp /usr/local/lib/R/site-library/plumber/examples/10-welcome/* /var/plumber/
 
 
 #install nginx, the web server that plumber works with
@@ -73,7 +74,6 @@ systemctl status plumber-hello
 # DATE/TIME alexaTest systemd[1]: Stopped Plumber API.
 # DATE/TIME alexaTest systemd[1]: Started Plumber API.
 # DATE/TIME alexaTest Rscript[10215]: Starting server to listen on port 8000
-
 
 wget https://raw.githubusercontent.com/bcaffo/alexaai/master/lectures/03_using_plumber/conf
 mv conf /etc/nginx/sites-available/plumber-apis/hello.conf

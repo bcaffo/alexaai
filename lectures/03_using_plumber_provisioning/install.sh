@@ -30,7 +30,8 @@ Rscript -e "devtools::install_github('trestletech/plumber')"
 mkdir -p /var/plumber
 
 ## copy over the example, not sure why it's put here and in the /var/plumber/hello directory
-cp /usr/local/lib/R/site-library/plumber/examples/10-welcome/* /var/plumber/
+# commenting out since I don't think that this is needed
+#cp /usr/local/lib/R/site-library/plumber/examples/10-welcome/* /var/plumber/
 
 
 #install nginx, the web server that plumber works with
@@ -63,17 +64,6 @@ systemctl enable plumber-hello
 
 ## check the status of the plumber script
 systemctl status plumber-hello
-## This is what I get from the status command
-#● plumber-hello.service - Plumber API
-#   Loaded: loaded (/etc/systemd/system/plumber-hello.service; enabled; vendor preset: enabled)
-#   Active: active (running) since Mon 2017-06-12 17:41:52 UTC; 9s ago
-# Main PID: 10215 (R)
-#   CGroup: /system.slice/plumber-hello.service
-#           └─10215 /usr/lib/R/bin/exec/R --slave --no-restore -e pr~+~<-~+~plumber::plumb('/var/plumber/hello/plumber.R');~+~pr$run(port=8000)
-# DATE/TIME alexaTest systemd[1]: Stopped Plumber API.
-# DATE/TIME alexaTest systemd[1]: Started Plumber API.
-# DATE/TIME alexaTest Rscript[10215]: Starting server to listen on port 8000
-
 
 wget https://raw.githubusercontent.com/bcaffo/alexaai/master/lectures/03_using_plumber/conf
 mv conf /etc/nginx/sites-available/plumber-apis/hello.conf

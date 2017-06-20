@@ -1,5 +1,5 @@
 ---
-title: "Your 2nd App"
+title: "Your Second App"
 author: "Brian Caffo"
 date: "6/19/2017"
 output: ioslides_presentation
@@ -12,8 +12,14 @@ knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
 ## Basic app
 - We're going to create a basic app that just communicates
 betwen R and the alexa service
+- We'll use the plumber server that you created in the previous
+lecture
 
-## Save this file in a directory called `alexaTest/plumber.R`
+
+## Save this file 
+- In a directory called `alexaTest/plumber.R`
+- [file here](https://github.com/bcaffo/alexaai/tree/master/lectures/05_your_2nd_app/alexaTest)
+
 ```{r}
 library(alexar)
 
@@ -21,16 +27,25 @@ library(alexar)
 #* @serializer unboxedJSON
 function(req){
   dispatchAlexaRequest(req, intent=function(name, slots, ...){
-    if (name=="intent1"){
-      alexaResponse(output="This is how I respond to intent1!")
-    } else if (name=="intent2"){
-      alexaResponse(output="This is what I say to intent2!")
+    if (name=="askIntent"){
+      alexaResponse(output="Thank you for asking, but try with some manners!")
+    } else if (name=="pleaseIntent"){
+      alexaResponse(output="You said the magic word!")
     }
   }, launch=function(){
-    alexaResponse("You can ask for intent1 or intent2")
+    alexaResponse("You can ask to test the app, try using please")
   })
 }
+
 ```
+
+
+## Install `alexar` on the server
+
+```{r}
+devtools::install_github("trestletech/alexar")
+```
+
 
 ## Getting your service running
 ```{r}
@@ -41,10 +56,49 @@ myDroplet = analogsea::droplets()$alexatest
 ```
 - `alexatest` is the name of my droplet (also what I'm calling the app and plumber service)
 
+## Remove the hello app if you installed it
+
+```{r}
+do_remove_forward(myDroplet)
+do_remove_api(myDroplet, "hello", delete = TRUE)
+```
+
+
 
 ## Run your service
 
+```{r}
+do_deploy_api(droplet = myDroplet, 
+              path = "alexaTest/",  
+              localPath = "alexaTest", 
+              forward = TRUE, 
+              port = 8000)
+```
+- `droplet` the droplet object obtained previously
+- `path` remote path to your `plumber.R` file (mine is then in `/var/plumber/alexatest`)
+- `localPath` local path to your directory with `plumber.R` in it
+- `forward` whether traffic from the root ip is forwarded
+- `port` the internet protocol port, keep at 8000
 
+## Verify it on your server
+- ssh into your server and type
+```
+systemctl status plumber-alexaTest.service 
+```
+(replace `alexaTest` with the name of your service)
+
+```
+● plumber-alexaTest.service - Plumber API
+   Loaded: loaded (/etc/systemd/system/plumber-alexaTest.service; enabled; vendor preset: enabled)
+   Active: active (running) since Mon 2017-06-19 23:17:09 UTC; 3s ago
+ Main PID: 16041 (R)
+   CGroup: /system.slice/plumber-alexaTest.service
+           └─16041 /usr/lib/R/bin/exec/R --slave --no-restore -e pr~+~<-~+~plumber::plumb('/var/plumber/alexaTest/plumber.R');~+~~+~pr$run(port=8000)
+
+Jun 19 23:17:09 alexatest systemd[1]: Stopped Plumber API.
+Jun 19 23:17:09 alexatest systemd[1]: Started Plumber API.
+Jun 19 23:17:10 alexatest Rscript[16041]: Starting server to listen on port 8000
+```
 
 ## Creating your app on alexa skills kit
 - We've already gone over much of this, so we'll redo it kind of quickly
@@ -52,32 +106,52 @@ myDroplet = analogsea::droplets()$alexatest
 - Skill type should be "Custom interaction model"
 - Fill in the rest of the fields, click Save then Next
 
+## My entries
+- `Name = plumberTestApp`
+- `Invocation name = test plumber`
+- `Audio player = no`
+
+
+## My intent schema
+
 ```
 {
   "intents": [
     {
-      "intent": "testMyAppIntent"
+      "intent": "askIntent"
     },
     {
-      "intent": "AMAZON.HelpIntent"
-    },
-    {
-      "intent": "AMAZON.StopIntent"
-    },
-    {
-      "intent": "AMAZON.CancelIntent"
+      "intent": "pleaseIntent"
     }
   ]
 }
 ```
 
-## Sample Utterances
+## Sample utterances
 ```
-testMyAppIntent test my app
-testMyAppIntent can you test my app
-testMyAppIntent will you test my app
-testMyAppIntent please test my app
+askIntent test my app
+askIntent can you test my app
+askIntent will you test my app
+pleaseIntent will you please test my app
+pleaseIntent please test my app
 ```
 
 ## Configuration
 - Pick Endpoint as `https`
+- Pick the appropriate region
+- Enter your domain, mine was
+`https://myalexaservice.site/alexaTest/`
+
+## Verify ssl cert
+`My development endpoint has a certificate from a trusted certificate authority`
+
+## Test your app
+- Test your app using the alexa skills kit testing service
+- Your app should be sending back the correct json files for the
+the request
+- You can download the app onto your (own) Echo using the app
+- To get it so that everyone can download it, you have to complete
+the certification process through amazon (don't bother for this simple app)
+- Congrats!
+
+

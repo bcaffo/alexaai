@@ -1,0 +1,132 @@
+---
+title: "Your third app"
+author: "Brian Caffo"
+date: "6/27/2017"
+output: ioslides_presentation
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, eval = FALSE)
+```
+
+## A full app
+- In this lecture, we'll build our first (sort of) useful app
+- It will be a lecture that gives fake Jeff Leek facts (or are they real?)
+- Uses code developed by Jeff Allen
+- We want to be able to do Alexa "load jeff leek facts", then "tell me a jeff leek fact"
+to tell us a fact
+- First clone `alexar` locally
+```
+git clone https://github.com/jhudsl/alexar.git
+```
+
+## Provision a server
+- Assume that you're starting fresh
+- Provision a server (lecture 3)
+- Set up SSL (lecture 4)
+- Install needed packages on your server, you can do this with `analogsea`
+from your local computer
+```{r}
+analogsea::droplet_ssh(myDroplet, "Rscript -e \"devtools::install_github('wlandau/JeffLeekMeme')\"")
+analogsea::droplet_ssh(myDroplet, "Rscript -e \"devtools::install_github('DataScienceSpecialization/alexar')\"")
+```
+(or you can log onto your server over ssh and do it there)
+```
+Rscript -e "devtools::install_github('wlandau/JeffLeekMeme')"
+Rscript -e "devtools::install_github('DataScienceSpecialization/alexar')"
+```
+
+## Deploy your api
+- I cloned `alexar` locally 
+`git clone https://github.com/jhudsl/alexar.git`
+- I deployed with this command:
+```{r}
+do_deploy_api(droplet = myDroplet, 
+              path = "jeffleekfacts/",  
+              localPath = "~/sandboxes/alexar/inst/examples/01-jeffleek/", 
+              forward = TRUE, 
+              port = 8000)
+```
+
+
+## Intent schema
+We'll use our intent schema from the same app built using lambda
+```
+{
+  "intents": [
+    {
+      "intent": "tellfact"
+    },
+    {
+      "intent": "AMAZON.HelpIntent"
+    },
+    {
+      "intent": "AMAZON.StopIntent"
+    },
+    {
+      "intent": "AMAZON.CancelIntent"
+    }
+  ]
+}
+```
+
+## Sample utterances
+```
+tellfact a fact
+tellfact a Jeff fact
+tellfact tell me a Jeff fact
+tellfact tell me a Jeff fact
+tellfact give me a fact
+tellfact give me a Jeff fact
+tellfact tell me Jeff Leek fact
+```
+
+## Make sure that your site is connected via https
+- Make sure that you went through the same steps
+in our previous app to connect your server over https
+
+## Some useful commands
+Stop the app
+```
+systemctl stop plumber-jeffleekfacts
+```
+Restart the app
+```
+systemctl restart plumber-jeffleekfacts
+```
+Watch the app interaction
+```
+journalctl -u plumber-jeffleekfacts
+```
+
+## Roughly, what is do_deploy_api doing?
+- This is not necessary, but it helps us understand what `do_deploy_api`
+is doing
+- In the next few slides, we'll cover the basics
+- We'll structure it as if you were to deploy the same app manually
+
+##  Copy your  api files to the relevant system directory
+```{sh}
+mkdir -p /var/plumber/jeffleekfacts
+cp -r /usr/local/lib/R/site-library/alexar/examples/01-jeffleek/* /var/plumber/jeffleekfacts/
+cp /usr/local/lib/R/site-library/plumber/server/plumber.service /etc/systemd/system/plumber-jeffleekfacts.service
+```
+
+## Restart the daemon
+```{sh}
+systemctl daemon-reload
+systemctl start plumber-jeffleekfacts.service && sleep 1
+systemctl restart plumber-jeffleekfacts.service && sleep 1
+systemctl enable plumber-jeffleekfacts.service
+# check the status
+systemctl status
+```
+
+## Copy over the config file
+```{sh}
+conf=/usr/local/lib/R/site-library/plumber/server/plumber-api.conf
+cp $conf /etc/nginx/sites-available/plumber-apis/jeffleekfacts.conf
+systemctl reload nginx
+```
+
+

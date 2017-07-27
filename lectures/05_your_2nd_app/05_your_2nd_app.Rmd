@@ -15,7 +15,6 @@ betwen R and the alexa service
 - We'll use the plumber server that you created in the previous
 lecture
 
-
 ## Save this file 
 - In a directory called `alexaTest/plumber.R`
 - [file here](https://github.com/bcaffo/alexaai/tree/master/lectures/05_your_2nd_app/alexaTest)
@@ -40,13 +39,6 @@ function(req){
 ```
 
 
-## Install `alexar` on the server
-
-```{r}
-devtools::install_github("trestletech/alexar")
-```
-
-
 ## Getting your service running
 ```{r}
 ## list out your droplets
@@ -56,6 +48,7 @@ myDroplet = analogsea::droplets()$alexatest
 ```
 - `alexatest` is the name of my droplet (also what I'm calling the app and plumber service)
 
+
 ## Remove the hello app if you installed it
 
 ```{r}
@@ -63,6 +56,13 @@ do_remove_forward(myDroplet)
 do_remove_api(myDroplet, "hello", delete = TRUE)
 ```
 
+## Install `alexar` on the server
+
+- either log onto the server and install it from github using devtools
+- or use `analogsea` in R from your local computer 
+```{r}
+analogsea::droplet_ssh(myDroplet, "Rscript -e \"devtools::install_github('DataScienceSpecialization/alexar')\"")
+```
 
 
 ## Run your service
@@ -153,5 +153,12 @@ the request
 - To get it so that everyone can download it, you have to complete
 the certification process through amazon (don't bother for this simple app)
 - Congrats!
+
+## Manually setting up the server
+- I have some scripts for setting up your server from the command prompt
+(on the server)
+- You can find the scripts [here](https://github.com/bcaffo/digitalOceanScripts)
+
+
 
 

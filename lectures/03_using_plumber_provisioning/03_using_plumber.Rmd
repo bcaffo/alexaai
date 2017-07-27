@@ -105,9 +105,6 @@ script uses default the smallest server and tricks like ramdrive to get
 away with it
 - Destroy / terminate the server when you're done using it
 
-## Using another cloud provider
-- I'm working on a shell script that does all of the stuff that do_provision does
-  so that you can do it on any linux server
-- The script can be found here [here](https://github.com/bcaffo/alexaai/blob/master/lectures/03_using_plumber/install.sh)
-- Currently it's missing something
+## Using another cloud provider or doing it locally on DO
+- Provided that you have 
 
